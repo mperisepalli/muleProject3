@@ -82,13 +82,18 @@
 				<configuration>
 					<coverage>
 						<runCoverage>true</runCoverage>
+						<failBuild>true</failBuild>
 						<formats>
 							<format>html</format>
 						</formats>
+						<requiredApplicationCoverage>20</requiredApplicationCoverage>
+ 						 <requiredResourceCoverage>10</requiredResourceCoverage>
+  						<requiredFlowCoverage>5</requiredFlowCoverage>
 					</coverage>
 					<dynamicPorts>
   						<dynamicPort>http.port</dynamicPort>
 					</dynamicPorts>
+					
 				</configuration>
 			</plugin>
 
@@ -134,6 +139,26 @@
 							<goal>deploy</goal>
 						</goals>
 					</execution> -->
+					<execution>
+						<id>deploy</id>
+						<phase>deploy</phase>
+						<goals>
+							<goal>deploy</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin> 
+			
+			<!--  use this for standalone deployment ONLY when we do not have HTTP connections else, we are getting address in use and build fails  -->
+			<plugin>
+				<groupId>org.mule.tools.maven</groupId>
+				<artifactId>mule-maven-plugin</artifactId>
+				<version>2.0</version>
+				<configuration>
+					<deploymentType>standalone</deploymentType>
+					<muleHome>E:/Softwares/mule-standalone-3.7.0/mule-standalone-3.7.0</muleHome>
+				</configuration>
+				<executions>
 					<execution>
 						<id>deploy</id>
 						<phase>deploy</phase>
