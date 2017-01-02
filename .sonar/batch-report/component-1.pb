@@ -1,1 +1,0 @@
-mavenProject2 J1.0Rjava-sonar-runner-simple

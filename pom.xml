@@ -4,10 +4,10 @@
 
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.mycompany</groupId>
-	<artifactId>mavenProject2</artifactId>
+	<artifactId>mavenProject3</artifactId>
 	<version>1.0.0-SNAPSHOT</version>
 	<packaging>mule</packaging>
-	<name>mavenProject2 Application</name>
+	<name>mavenProject3 Application</name>
 
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -30,7 +30,7 @@
 				<extensions>true</extensions>
 				<configuration>
 					<copyToAppsDirectory>false</copyToAppsDirectory>
-					
+
 				</configuration>
 			</plugin>
 
@@ -87,13 +87,13 @@
 							<format>html</format>
 						</formats>
 						<requiredApplicationCoverage>20</requiredApplicationCoverage>
- 						 <requiredResourceCoverage>10</requiredResourceCoverage>
-  						<requiredFlowCoverage>5</requiredFlowCoverage>
+						<requiredResourceCoverage>10</requiredResourceCoverage>
+						<requiredFlowCoverage>5</requiredFlowCoverage>
 					</coverage>
 					<dynamicPorts>
-  						<dynamicPort>http.port</dynamicPort>
+						<dynamicPort>http.port</dynamicPort>
 					</dynamicPorts>
-					
+
 				</configuration>
 			</plugin>
 
@@ -131,14 +131,7 @@
 					<redeploy>true</redeploy>
 					<environment>Production</environment>
 				</configuration>
-				 <executions>
-				<!--	<execution>
-						<id>undeploy</id>
-						<phase>post-integration-test</phase>
-						<goals>
-							<goal>deploy</goal>
-						</goals>
-					</execution> -->
+				<executions>
 					<execution>
 						<id>deploy</id>
 						<phase>deploy</phase>
@@ -147,10 +140,58 @@
 						</goals>
 					</execution>
 				</executions>
-			</plugin> 
+			</plugin>
+		
+	
+			   <plugin>
+            <groupId>com.hello2morrow</groupId>
+            <artifactId>sonargraph-maven-plugin</artifactId>
+            <version>9.1.1</version>
+            <configuration>
+			<prepareForSonarQube>true</prepareForSonarQube>
+                <systemDirectory>./sonar-sonargraph-plugin.sonargraph</systemDirectory>
+                <activationCode>6099-EDD8-F510-1553</activationCode>
+                <autoUpdate>true</autoUpdate>
+                <failSet>
+                    <failOnEmptyWorkspace>true</failOnEmptyWorkspace>
+                    <includes>
+                        <include>
+                            <issueType>ArchitectureViolation</issueType>
+                        </include>
+                        <include>
+                            <issueType>any</issueType>
+                            <severity>error</severity>
+                        </include>
+                    </includes>
+                    <excludes>
+                        <exclude>
+                            <issueType>ScriptCompilationError</issueType>
+                            <resolution>none</resolution>
+                        </exclude>
+                    </excludes>
+                </failSet>
+            </configuration>
+            <executions>
+                <execution>
+                    <goals>
+                        <goal>create-report</goal>
+                        <goal>dynamic-report</goal>
+                    </goals>
+                </execution>
+            </executions>
+        </plugin>
 			
-			<!--  use this for standalone deployment ONLY when we do not have HTTP connections else, we are getting address in use and build fails  -->
-			<plugin>
+			
+      <plugin>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>sonar-maven-plugin</artifactId>
+        <version>2.3</version>
+      </plugin>
+    
+
+			<!-- use this for standalone deployment ONLY when we do not have HTTP 
+				connections else, we are getting address in use and build fails -->
+			<!-- <plugin>
 				<groupId>org.mule.tools.maven</groupId>
 				<artifactId>mule-maven-plugin</artifactId>
 				<version>2.0</version>
@@ -167,7 +208,9 @@
 						</goals>
 					</execution>
 				</executions>
-			</plugin>
+			</plugin> -->
+
+
 		</plugins>
 
 
@@ -286,7 +329,41 @@
 			<version>1.19</version>
 		</dependency>
 	</dependencies>
-
+	<repositories>
+          <repository>
+            <id>Central</id>
+            <name>Central</name>
+            <url>http://repo1.maven.org/maven2/</url>
+            <layout>default</layout>
+        </repository>
+        <repository>
+            <id>mulesoft-releases</id>
+            <name>MuleSoft Releases Repository</name>
+            <url>http://repository.mulesoft.org/releases/</url>
+            <layout>default</layout>
+        </repository>
+		 <repository>
+            <id>sonargraph</id>
+            <name>Sonargraph Releases Repository</name>
+            <url>http://maven.hello2morrow.com/repository/</url>
+            <layout>default</layout>
+        </repository>
+    </repositories>
+ <pluginRepositories>
+        <pluginRepository>
+            <id>mulesoft-release</id>
+            <name>mulesoft release repository</name>
+            <layout>default</layout>
+            <url>http://repository.mulesoft.org/releases/</url>
+            <snapshots>
+                <enabled>false</enabled>
+            </snapshots>
+        </pluginRepository>
+		<pluginRepository>
+        <id>hello2morrow.maven.repository</id>
+        <url>http://maven.hello2morrow.com/repository</url>
+      </pluginRepository>
+    </pluginRepositories>
 
 
 </project>
