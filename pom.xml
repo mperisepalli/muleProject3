@@ -7,7 +7,7 @@
 	<artifactId>mavenProject3</artifactId>
 	<version>1.0.0-SNAPSHOT</version>
 	<packaging>mule</packaging>
-	<name>mavenProject3 Application</name>
+	<name>mavenProject3</name>
 
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
