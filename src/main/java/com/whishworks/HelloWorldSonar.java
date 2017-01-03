@@ -16,6 +16,9 @@ public class HelloWorldSonar {
 		// TODO Auto-generated method stub
 		HelloWorldSonar sonar = new HelloWorldSonar();
 		sonar.wait();
+		System.exit(0);
+		Runtime.getRuntime().exit(0);
+		Runtime.getRuntime().halt(0);
 		String name = null;
 		System.out.println("value of name is " + name.toUpperCase());
 
