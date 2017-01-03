@@ -19,6 +19,9 @@ public class HelloWorldSonar {
 		System.exit(0);
 		Runtime.getRuntime().exit(0);
 		Runtime.getRuntime().halt(0);
+		synchronized (sonar) {  
+			sonar.notify(); 
+		}
 		String name = null;
 		System.out.println("value of name is " + name.toUpperCase());
 
