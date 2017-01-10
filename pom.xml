@@ -209,7 +209,78 @@
 					</execution>
 				</executions>
 			</plugin> -->
+			
+			
+			
+	 <!-- order of execution is (1) prepare agent is run to configure the property, then (2)unit tests are run, then (3) the check goal of jacoco is run to check code coverage -->
+    
+      <!-- the surefire plugin -->
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-surefire-plugin</artifactId>
+        <version>2.18.1</version>
+        <configuration>
+            <!-- (2)  setup the argLine and run the unit tests.   **NOTE the "jacocArgeLine" property was configured the "prepare-agent" goal of Jacoco  (see below) -->
+            <argLine>${jacocoArgLine} -Xmx256m</argLine>
+        </configuration>
+      </plugin>
+    
+    
+      <!-- the jacoco plugin, we are going to use 2 goals provided by this plugin -->
+      <plugin>
+        <groupId>org.jacoco</groupId>
+        <artifactId>jacoco-maven-plugin</artifactId>
+        <version>0.7.2.201409121644</version>
+        
+         <executions>
 
+           <!--  (1)  Prepare agent runs in the init phase, it setups the jacocoProperty,  so we can insert this to the maven sure fire argLine and get to run jacoco as agent -->
+          <execution>
+            <id>prepare-agent</id>
+            <goals>
+              <goal>prepare-agent</goal>
+            </goals>
+            <configuration>
+              <propertyName>jacocoArgLine</propertyName>
+              <includes>
+                <include>com.*</include>
+              </includes>
+            </configuration>
+          </execution>
+          
+          <!--  (3) the check goal by default runs in the verify phase, we want to fail the build if mimimum code coverage checks aren't met -->
+          <execution>
+            <id>check</id>
+            <goals>
+              <goal>check</goal>
+            </goals>
+            <configuration>
+              <rules>
+                <!-- All classes must have 80% line and branch coverage . Note we use 2 d.p so that we get can any check failure messages reported to 2 d.p  -->
+                <rule >
+                  <element>CLASS</element>
+                  <limits>
+                    <limit >
+                      <counter>LINE</counter>
+                      <value>COVEREDRATIO</value>
+                      <minimum>0.40</minimum>
+                    </limit>
+                    <limit >
+                      <counter>BRANCH</counter>
+                      <value>COVEREDRATIO</value>
+                      <minimum>0.40</minimum>
+                    </limit>
+                  </limits>
+                  <excludes>
+                    <exclude>com.whishworks.HelloWorldSonar</exclude>
+                  </excludes>
+                </rule>
+              </rules>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+	  
 
 		</plugins>
 
@@ -328,6 +399,14 @@
 			<artifactId>jersey-client</artifactId>
 			<version>1.19</version>
 		</dependency>
+		
+		<dependency>
+        <groupId>junit</groupId>
+        <artifactId>junit</artifactId>
+        <version>4.12</version>
+        <scope>test</scope>
+      </dependency>
+	  
 	</dependencies>
 	<repositories>
           <repository>
